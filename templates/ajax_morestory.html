@@ -1,0 +1,16 @@
+{% for story in stories %}
+        <div class="grid-item">
+            <div class="card-main">
+                <div class="card-hd">
+                    <a href="/story/{{ story.id }}">
+                        <img src="imgurl/url={{ story.images.0|safe }}" class="story-image">
+                    </a>
+                </div>
+                <div class="card-bd">
+                    <a href="/story/{{ story.id }}">
+                        <span class="title">{{ story.title }}</span>
+                    </a>
+                </div>
+            </div>
+            </div>
+            {% endfor %}
