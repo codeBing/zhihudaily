@@ -37,6 +37,9 @@ class singelNews(object):
     def getimage(self):
         return self.data['image']
 
+    def getsource(self):
+        return self.data['image_source']
+
     def getid(self):
         return self.data['id']
 
@@ -60,8 +63,14 @@ class latestNews():
         return self.data['stories'][index].get('id')
 
     def getstories(self):
-        self.data['stories'] = getLargeImg(self.data['stories'])
+        largestories = getLargeImg(self.data['stories'])
+        return largestories
+
+    def getmobilestories(self):
         return self.data['stories']
+
+    def gettopstories(self):
+        return self.data['top_stories']
 
     def getnum(self):
         return len(self.data['stories'])
@@ -71,7 +80,10 @@ class beforeNews(object):
         self.data = api.getBefore(date)
 
     def getstories(self):
-        getLargeImg(self.data['stories'])
+        largestories = getLargeImg(self.data['stories'])
+        return largestories
+
+    def getmobilestories(self):
         return self.data['stories']
 
 def getLargeImg(stories):

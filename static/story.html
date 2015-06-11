@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link href="/static/css/story.css" rel="stylesheet">
+</head>
+<body>
+    <div id="header">
+        <a href="/home" title="知乎日报">
+            <img src="/static/img/zhihu_logo.png" class="head-wrap">
+        </a>
+    </div>
+{{ body|safe }}
+<div id="footer">
+	<ul>
+		<li>© 2015 知乎 · Powered by BING
+		<li>客官赏颗星星吧 (*^__^*) <a href="https://github.com/codeBing/zhihudaily">Github</a></li>
+	</ul>
+</div>
+</body>
+</html>

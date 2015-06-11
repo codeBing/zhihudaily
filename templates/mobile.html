@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>知乎日报-精简</title>
+    <meta name="viewport" content="user-scalable=no, width=device-width">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/mobile.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/jquery.skippr.css">
+</head>
+<body>
+<div id="header">
+    <a href="/m" title="知乎日报">
+        <img src="/static/img/zhihu_logo.png" class="head-wrap">
+    </a>
+</div>
+<div class="main-wrap">
+    <div id="slider">
+        {% for top in topstories %}
+            <div style="background-image: url('imgurl/url={{ top.image|safe }}')">
+                <a href="/story/{{ top.id }}"><div style="width: 100%;height: 100%;z-index: 1"></div>
+                </a>
+                <p class="slidertitle">{{ top.title }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="story-wrap">
+        {% for story in stories %}
+            <div class="story-content" onclick="location.href='/story/{{ story.id }}';">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object" style="width: 100px;height: 100px;" src="imgurl/url={{ story.images.0|safe }}" alt="">
+                        </a>
+                    </div>
+                    <div class="media-body media-middle">
+                        {{ story.title }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div id="btn_load">
+        <button type="button" class="btn btn-default btn-block">
+            加载更多
+            <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+        </button>
+    </div>
+    <div class="center-block" id="page_loading" style="text-align: center;">
+        <img class="center-block" src="/static/img/20141023034635421.gif"> 敌军还有30秒到达战场...
+    </div>
+</div>
+<div id="footer">
+    <ul>
+        <li>© 2015 知乎 · Powered by BING
+        <li><a href="https://github.com/codeBing/zhihudaily">Github</a></li>
+    </ul>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/static/js/jquery-2.1.4.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/jquery.skippr.min.js"></script>
+<script src="/static/js/jQuery.event.swipe.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#page_loading").hide("fast");
+        $("#slider").skippr({
+            transition: 'fade',
+            navType: 'bubble',
+            childrenElementType: 'div',
+            autoPlay: true,
+            autoPlayDuration: 4000,
+            keyboardOnAlways: true,
+            hidePrevious: true
+        });
+
+    });
+    var myDate = new Date();
+    function dateToStr(date){
+        var year = date.getFullYear();
+        var month = date.getMonth()+1;
+        var date = date.getDate();
+        if(month < 10){
+            month = '0'+month;
+        }
+        if(date < 10){
+            date = '0'+date;
+        }
+        return year+""+month+""+date;
+
+    }
+    $("#btn_load").click(function(){
+        //设置日期
+        var dateStr = dateToStr(myDate);
+        // 显示正在加载模块
+        $("#page_loading").show("fast");
+        $("#btn_load").hide("fast");
+        //alert(dateStr);
+        // Ajax 翻页
+        $.ajax({
+            url: "/story/before/m/" + dateStr,
+            type: "GET",
+            success: function (data) {
+                var result = $(data);
+                $(".story-wrap").append(result);
+                $("#page_loading").hide("fast");
+                $("#btn_load").show("fast");
+            },
+            complete: function () {
+                myDate.setDate(myDate.getDate() - 1)
+            } // 完成 Ajax 请求后重新设 sentIt 为 true
+        });
+    });
+</script>
+</body>
+</html>

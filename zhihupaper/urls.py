@@ -23,4 +23,7 @@ urlpatterns = [
     url(r'^story/(\d+)$', views.story),
     url(r'^imgurl/(?P<url>.*)$', views.get_pic),
     url(r'^story/before/(\d+)$', views.ajax_morestory),
+    url(r'^story/before/m/(\d+)$', views.m_ajax_morestory),
+    url(r'^m/$', views.mobile),
+    url(r'^m$', views.mobile),
 ]

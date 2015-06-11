@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
+<head lang="zh-CN">
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>{{ title }}</title>
+<meta name="viewport" content="user-scalable=no, width=device-width">
     <link href="/static/css/story.css" rel="stylesheet">
 </head>
 <body>
     <div id="header">
-        <a href="/home" title="知乎日报">
+        <a href="/home" title="知乎日报" class="desktop">
+            <img src="/static/img/zhihu_logo.png" class="head-wrap">
+        </a>
+        <a href="/m" title="知乎日报" class="m">
             <img src="/static/img/zhihu_logo.png" class="head-wrap">
         </a>
     </div>
@@ -15,7 +20,7 @@
 <div id="footer">
 	<ul>
 		<li>© 2015 知乎 · Powered by BING
-		<li>客官赏颗星星吧 (*^__^*) <a href="https://github.com/codeBing/zhihudaily">Github</a></li>
+		<li><a href="https://github.com/codeBing/zhihudaily">Github</a></li>
 	</ul>
 </div>
 </body>

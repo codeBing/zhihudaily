@@ -1,16 +1,16 @@
-{% for story in stories %}
-        <div class="grid-item">
-            <div class="card-main">
-                <div class="card-hd">
-                    <a href="/story/{{ story.id }}">
-                        <img src="imgurl/url={{ story.images.0|safe }}" class="story-image">
-                    </a>
-                </div>
-                <div class="card-bd">
-                    <a href="/story/{{ story.id }}">
-                        <span class="title">{{ story.title }}</span>
-                    </a>
+ {% for story in stories %}
+            <div class="grid-item col-md-3 col-sm-4 col-xs-10">
+                <div class="card-main center-block">
+                    <div class="card-hd">
+                        <a href="/story/{{ story.id }}">
+                            <img src="imgurl/url={{ story.images.0|safe }}" class="story-image img-responsive">
+                        </a>
+                    </div>
+                    <div class="card-bd">
+                        <a href="/story/{{ story.id }}">
+                            <span class="title">{{ story.title }}</span>
+                        </a>
+                    </div>
                 </div>
             </div>
-            </div>
-            {% endfor %}
+        {% endfor %}

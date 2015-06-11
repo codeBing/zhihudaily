@@ -23,14 +23,14 @@
         <img src="/static/img/zhihu_logo.png" class="main-wrap">
     </a>
 </div>
-<div id ="content">
-    <div class="grid">
+<div class="container main-container">
+    <div class="grid row">
         {% for story in stories %}
-            <div class="grid-item">
-                <div class="card-main">
+            <div class="grid-item col-md-3 col-sm-4 col-xs-10">
+                <div class="card-main center-block">
                     <div class="card-hd">
                         <a href="/story/{{ story.id }}">
-                            <img src="imgurl/url={{ story.images.0|safe }}" class="story-image">
+                            <img src="imgurl/url={{ story.images.0|safe }}" class="story-image img-responsive">
                         </a>
                     </div>
                     <div class="card-bd">
@@ -43,12 +43,15 @@
         {% endfor %}
 
     </div>
+    <div class="center-block" id="page_loading" style="text-align: center;">
+        <img class="center-block" src="/static/img/20141023034635421.gif"> 敌军还有30秒到达战场...
+    </div>
 </div>
 <div id="footer">
-	<ul>
-		<li>© 2015 知乎 · Powered by BING
-		<li>客官赏颗星星吧 (*^__^*) <a href="https://github.com/codeBing/zhihudaily">Github</a></li>
-	</ul>
+    <ul>
+        <li>© 2015 知乎 · Powered by BING
+        <li>客官赏颗星星吧 (*^__^*) <a href="https://github.com/codeBing/zhihudaily">Github</a></li>
+    </ul>
 </div>
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -57,15 +60,20 @@
 <script src="/static/js/bootstrap.min.js"></script>
 <script src="/static/js/masonry.pkgd.min.js"></script>
 <!--Django官方提供解决ajax post 403的问题-->
-<script src="/static/js/ajax_post.js"></script>
+<script src="/static/js/imagesloaded.pkgd.min.js"></script>
 
 <script>
     var myDate = new Date()
+    $("#page_loading").hide();
+    $(function() {
+        var image = $(".story-image");
+        image.imagesLoaded(function(){
+            $(".grid").masonry({
+                columnWidth: '.grid-item',
+                itemSelector: '.grid-item',
+            });
+        });
 
-    $('.grid').masonry({
-        // options
-        itemSelector: '.grid-item',
-        columnWidth: 300
     });
     function dateToStr(date){
         var str = date.split("/");
@@ -81,11 +89,11 @@
     // 初始化 sentIt
     var sentIt = true;
     // 给浏览器窗口绑定 scroll 事件
-    $(window).bind("scroll",function() {
+    $(document).scroll(function(){
         // 判断窗口的滚动条是否接近页面底部，加入 sentIt 判断，当触发一次 Ajax 分页时把 sentIt 设为 false，禁止触发多余的 Ajax 请求
-        if ($(document).scrollTop() + $(window).height() > $(document).height() - 30 && sentIt) {
+        var vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+        if ($(document).scrollTop() >= $(document).height() - $(window).height() && sentIt){
             //设置日期
-            myDate.setDate(myDate.getDate() - 1)
             var dateStr = dateToStr(myDate.toLocaleDateString())
             // 显示正在加载模块
             $("#page_loading").show("slow");
@@ -97,11 +105,24 @@
                     sentIt = false;
                 }, // 触发了一次 Ajax 分页时把 sentIt 设为 false
                 success: function (data) {
-                    var $items = $(data)
-                    $(".grid").append($items).masonry( 'appended', $items );
+                    var result = $(data);
+                    $(".grid").append(result)
+                    //$newElems = result.css({ opacity: 0 });
+                    //var $items = $(data)
+
+                    //$(".grid").append($items)
+                    $(".grid").imagesLoaded(function(){
+                        $(".grid").masonry( 'appended', result, true);
+                        // 渐显新的内容
+                        //$newElems.animate({ opacity: 1 });
+                        // 隐藏正在加载模块
+                        $("#page_loading").hide("slow");
+                    });
+
                 },
                 complete: function () {
                     setTimeout(sentIt = true, 600);
+                    myDate.setDate(myDate.getDate() - 1)
                 } // 完成 Ajax 请求后重新设 sentIt 为 true
             });
         }

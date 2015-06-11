@@ -1,0 +1,14 @@
+{% for story in stories %}
+<div class="story-content" onclick="location.href='/story/{{ story.id }}';">
+<div class="media">
+  <div class="media-left">
+    <a href="#">
+      <img class="media-object" style="width: 100px;height: 100px;"  src="imgurl/url={{ story.images.0|safe }}" alt="">
+    </a>
+  </div>
+  <div class="media-body media-middle">
+    {{ story.title }}
+  </div>
+</div>
+</div>
+    {% endfor %}
